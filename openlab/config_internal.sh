@@ -1,3 +1,4 @@
+#!/bin/bash
 set -ex
 
 INSTALL_DIR="/opt/"
