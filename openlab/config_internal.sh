@@ -36,13 +36,21 @@ install_app() {
   fi
 }
 
+function version { echo "$@" | awk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'; }
+
 install_mvn() {
+  #Sample:
+  #export APACHE_MIRROR="https://repo.huaweicloud.com/apache/"
+  #export M_VERSION="3.6.1"
   local MVN_VERSION=${M_VERSION:-'2.6.1'}
-  MVN_BIN="$(command -v mvn)"
+  MVN_BIN="$(command -v mvn || true)"
   if [ "$MVN_BIN" ]; then
     local MVN_DETECTED_VERSION="$(mvn --version | head -n1 | awk '{print $3}')"
+  else
+    local MVN_DETECTED_VERSION="0.0.0"
   fi
   if [ $(version $MVN_DETECTED_VERSION) -lt $(version $MVN_VERSION) ]; then
+    # Now just support MAVEN-3 version. MAVEN-2 is EOF
     local APACHE_MIRROR=${APACHE_MIRROR:-'https://www.apache.org/dyn/closer.lua?action=download&filename='}
 
     if [ $(command -v curl) ]; then
@@ -60,7 +68,12 @@ install_mvn() {
       "apache-maven-${MVN_VERSION}/bin/mvn"
 
     MVN_BIN="${INSTALL_DIR}/apache-maven-${MVN_VERSION}/bin/mvn"
-	
+    cat << EOF >> ~/.bashrc
+export PATH=${INSTALL_DIR}/apache-maven-${MVN_VERSION}/bin/:$PATH
+EOF
+    cat << EOF >> ~/.profile
+export PATH=${INSTALL_DIR}/apache-maven-${MVN_VERSION}/bin/:$PATH
+EOF
     sudo wget -O "${INSTALL_DIR}/apache-maven-${MVN_VERSION}/conf/settings.xml" https://mirrors.huaweicloud.com/v1/configurations/maven
   else
     sudo wget -O /etc/maven/settings.xml https://mirrors.huaweicloud.com/v1/configurations/maven
@@ -85,7 +98,7 @@ rewrite_apt() {
   
   sudo mv $TAGET_APT_PATH $BACKUP_APT_PATH
   
-  if [ "$CURRENT_VERSION" = "xenial" ]
+  if [ "$CURRENT_VERSION" = "bionic" ]
   then
     wget -O /etc/apt/sources.list https://repo.huaweicloud.com/repository/conf/Ubuntu-Ports-bionic.list
   else
@@ -105,7 +118,7 @@ rewrite_dockerhub_source() {
 }
 EOF
   sudo systemctl daemon-reload
-  sudo systemctl restart docker
+  sudo systemctl restart docker || true
 }
 
 rewrite_apt
