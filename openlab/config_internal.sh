@@ -61,7 +61,7 @@ install_mvn() {
 
     MVN_BIN="${INSTALL_DIR}/apache-maven-${MVN_VERSION}/bin/mvn"
 	
-	sudo wget -O "${INSTALL_DIR}/apache-maven-${MVN_VERSION}/conf/settings.xml" https://mirrors.huaweicloud.com/v1/configurations/maven
+    sudo wget -O "${INSTALL_DIR}/apache-maven-${MVN_VERSION}/conf/settings.xml" https://mirrors.huaweicloud.com/v1/configurations/maven
   else
     sudo wget -O /etc/maven/settings.xml https://mirrors.huaweicloud.com/v1/configurations/maven
   fi
@@ -90,8 +90,8 @@ rewrite_apt() {
     wget -O /etc/apt/sources.list https://repo.huaweicloud.com/repository/conf/Ubuntu-Ports-bionic.list
   else
     echo "Not support version $CURRENT_VERSION"
-  	sudo mv $BACKUP_APT_PATH $TAGET_APT_PATH
-  	exit 1
+    sudo mv $BACKUP_APT_PATH $TAGET_APT_PATH
+    exit 1
   fi
   
   sudo apt-get update
