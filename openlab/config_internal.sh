@@ -5,7 +5,7 @@
 ## maven apache mirror setting
 # export APACHE_MIRROR="https://repo.huaweicloud.com/apache/"
 ## maven version
-# export M_VERSION="3.6.1"
+# export M_VERSION="3.6.2"
 
 set -ex
 
@@ -49,8 +49,8 @@ function version { echo "$@" | awk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'
 install_mvn() {
   #Sample:
   #export APACHE_MIRROR="https://repo.huaweicloud.com/apache/"
-  #export M_VERSION="3.6.1"
-  local MVN_VERSION=${M_VERSION:-'2.6.1'}
+  #export M_VERSION="3.6.2"
+  local MVN_VERSION=${M_VERSION:-'3.6.2'}
   MVN_BIN="$(command -v mvn || true)"
   if [ "$MVN_BIN" ]; then
     local MVN_DETECTED_VERSION="$(mvn --version | head -n1 | awk '{print $3}')"
