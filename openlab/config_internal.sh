@@ -108,7 +108,7 @@ rewrite_apt() {
   
   if [ "$CURRENT_VERSION" = "bionic" ]
   then
-    wget -O /etc/apt/sources.list https://repo.huaweicloud.com/repository/conf/Ubuntu-Ports-bionic.list
+    sudo wget -O /etc/apt/sources.list https://repo.huaweicloud.com/repository/conf/Ubuntu-Ports-bionic.list
   else
     echo "Not support version $CURRENT_VERSION"
     sudo mv $BACKUP_APT_PATH $TAGET_APT_PATH
