@@ -1,7 +1,15 @@
 #!/bin/bash
+# env list:
+## maven install directory
+# export INSTALL_TARGET="/opt/"
+## maven apache mirror setting
+# export APACHE_MIRROR="https://repo.huaweicloud.com/apache/"
+## maven version
+# export M_VERSION="3.6.1"
+
 set -ex
 
-INSTALL_DIR="/opt/"
+INSTALL_DIR=${INSTALL_TARGET:-'/opt/'}
 
 install_app() {
   local remote_tarball="$1/$2"
@@ -50,7 +58,7 @@ install_mvn() {
     local MVN_DETECTED_VERSION="0.0.0"
   fi
   if [ $(version $MVN_DETECTED_VERSION) -lt $(version $MVN_VERSION) ]; then
-    # Now just support MAVEN-3 version. MAVEN-2 is EOF
+    # Now just support MAVEN-3 version. MAVEN-2 is EOL
     local APACHE_MIRROR=${APACHE_MIRROR:-'https://www.apache.org/dyn/closer.lua?action=download&filename='}
 
     if [ $(command -v curl) ]; then
